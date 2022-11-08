@@ -8,6 +8,6 @@ namespace ApiBuildProject.Repositories
         bool Delete(int id);
         List<UserModel> GetAllUser();
         UserModel GetById(int id);
-        bool Update(UserModel user);
+        bool Update(int id, UserModel user);
     }
 }

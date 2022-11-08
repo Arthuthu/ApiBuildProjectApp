@@ -2,4 +2,4 @@
 @id int
 AS
 SELECT * FROM Users
-WHERE id=@id
+WHERE @id=id

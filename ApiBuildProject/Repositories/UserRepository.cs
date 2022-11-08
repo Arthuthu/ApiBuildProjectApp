@@ -1,7 +1,7 @@
 ﻿using ApiBuildProject.Connection;
 using ApiBuildProject.Models;
 using Dapper;
-using System.Data.SqlClient;
+using System.Data;
 
 namespace ApiBuildProject.Repositories
 {
@@ -26,7 +26,7 @@ namespace ApiBuildProject.Repositories
 
             using (connValue)
             {
-                var user = connValue.Query<UserModel>("select * from Users WHERE id=@id", new { id }).SingleOrDefault();
+                var user = connValue.Query<UserModel>($"dbo.GetUserById @id = '{id}'").SingleOrDefault();
 
                 return user;
             }
@@ -36,6 +36,11 @@ namespace ApiBuildProject.Repositories
         {
             var connValue = Conexao.ConnectionValue();
 
+            using (connValue)
+            {
+                connValue.Execute($"Insert into Users values (@Email, @Password)", user);
+            }
+
             return true;
         }
 
@@ -43,13 +48,33 @@ namespace ApiBuildProject.Repositories
         {
             var connValue = Conexao.ConnectionValue();
 
-            return true;
+            using (connValue)
+            {
+                connValue.Execute("Delete from Users Where id = @uID", new { uID = id});
+            }
 
+            return true;
         }
 
-        public bool Update(UserModel user)
+        public bool Update(int id, UserModel user)
         {
             var connValue = Conexao.ConnectionValue();
+
+            using (connValue)
+            {
+                connValue.Execute(
+                    @"Update Users set
+                    Email = @Email,
+                    Password = @Password
+                    WHERE
+                    Id = @id",
+                    new
+                    {
+                        id = id,
+                        email = user.Email,
+                        password = user.Password
+                    });
+            }
 
             return true;
         }

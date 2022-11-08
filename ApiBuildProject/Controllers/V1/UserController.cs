@@ -34,18 +34,27 @@ namespace ApiBuildProject.Controllers.V1
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] UserModel user)
         {
+            _userRepository.Create(user);
+
+            return Ok();
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] UserModel user)
         {
+            _userRepository.Update(id, user);
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            _userRepository.Delete(id);
+
+            return Ok();
         }
     }
 }

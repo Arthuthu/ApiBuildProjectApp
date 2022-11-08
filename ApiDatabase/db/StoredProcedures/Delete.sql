@@ -2,4 +2,4 @@
 @id int
 AS
 DELETE FROM Users
-WHERE @id=id
+WHERE id = @id
