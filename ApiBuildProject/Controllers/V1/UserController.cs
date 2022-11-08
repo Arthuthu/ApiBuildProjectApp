@@ -26,11 +26,11 @@ namespace ApiBuildProject.Controllers.V1
         }
 
         [HttpGet("{id}")]
-        public UserModel GetById(int id)
+        public IActionResult GetById(int id)
         {
             var user = _userRepository.GetById(id);
 
-            return user;
+            return Ok(user);
         }
 
         [HttpPost]
