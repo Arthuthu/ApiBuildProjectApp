@@ -1,7 +1,8 @@
 ﻿using ApiBuildProject.Contracts.V1;
+using ApiBuildProject.Models;
+using ApiBuildProject.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ApiBuildProject.Controllers.V1
 {
@@ -9,16 +10,27 @@ namespace ApiBuildProject.Controllers.V1
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IUserRepository _userRepository;
+
+        public UserController(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok("Art");
+            var users = _userRepository.GetAllUser();
+
+            return Ok(users);
         }
 
         [HttpGet("{id}")]
-        public string GetById(int id)
+        public UserModel GetById(int id)
         {
-            return "value";
+            var user = _userRepository.GetById(id);
+
+            return user;
         }
 
         [HttpPost]
